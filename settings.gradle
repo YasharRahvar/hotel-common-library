@@ -1,0 +1,3 @@
+rootProject.name = 'hotel-common-library'
+include 'hotel-security-utils'
+

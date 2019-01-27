@@ -1,0 +1,46 @@
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version = '1.0.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes('Implementation-Title': 'Hotel - Security Utils',
+                'Implementation-Version': version)
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'com.hotel'
+            artifactId 'security-utils'
+            version version
+
+            from components.java
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+}
+
+dependencies {
+    compile(group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '1.2.1.RELEASE')
+    compile('com.buzzmove:converter-utils:1.0.0')
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.3.RELEASE')
+}
+
+task cleanBuildPublish {
+    dependsOn 'clean'
+    dependsOn 'build'
+    dependsOn 'publish'
+    tasks.findByName('build').mustRunAfter 'clean'
+    tasks.findByName('publish').mustRunAfter 'build'
+}
